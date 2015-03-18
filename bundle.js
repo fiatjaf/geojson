@@ -13,6 +13,10 @@ params = qs.parse(location.search.slice(1));
 
 sourceURL = params.url || params.source || params.src;
 
+if (sourceURL.slice(-1)[0] === '/') {
+  sourceURL = sourceURL.slice(0, -1);
+}
+
 map = new GMaps({
   div: '#map',
   lat: 0,
@@ -34,7 +38,7 @@ if (params.type || params.maptype) {
 }
 
 superagent.get(sourceURL, function(err, res) {
-  var center, feature, geo, googlepoint, i, infowindow, j, len, len1, path, point, pointsToFit, ref, ref1;
+  var center, feature, geo, googlepoint, i, infowindow, j, len, len1, path, point, pointsToFit, pt, ref, ref1;
   if (err || !res) {
     return;
   }
@@ -46,7 +50,16 @@ superagent.get(sourceURL, function(err, res) {
     switch (feature.geometry.type) {
       case 'Polygon':
         center = polygonCenter(feature.geometry);
-        pointsToFit.push(new google.maps.LatLng(center.coordinates[1], center.coordinates[0]));
+        pointsToFit = pointsToFit.concat((function() {
+          var j, len1, ref1, results;
+          ref1 = feature.geometry.coordinates[0];
+          results = [];
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            pt = ref1[j];
+            results.push(new google.maps.LatLng(pt[1], pt[0]));
+          }
+          return results;
+        })());
         infowindow = new google.maps.InfoWindow({
           content: infoWindowContent(feature)
         });
@@ -73,9 +86,11 @@ superagent.get(sourceURL, function(err, res) {
         }
         break;
       case 'Point':
+        point = feature.geometry;
+        pointsToFit.push(new google.maps.LatLng(point.coordinates[1], point.coordinates[0]));
         map.addMarker({
-          lat: feature.geometry.coordinates[1],
-          lng: feature.geometry.coordinates[0],
+          lat: point.coordinates[1],
+          lng: point.coordinates[0],
           title: feature.properties['title'],
           icon: {
             path: google.maps.SymbolPath.CIRCLE,

@@ -5,6 +5,8 @@ qs            = require 'qs'
 div = document.createElement 'div'
 params = qs.parse location.search.slice 1
 sourceURL = params.url or params.source or params.src
+if sourceURL.slice(-1)[0] == '/'
+  sourceURL = sourceURL.slice 0, -1
 
 map = new GMaps
   div: '#map'
@@ -35,7 +37,7 @@ superagent.get sourceURL, (err, res) ->
 
       when 'Polygon'
         center = polygonCenter feature.geometry
-        pointsToFit.push new google.maps.LatLng center.coordinates[1], center.coordinates[0]
+        pointsToFit = pointsToFit.concat (new google.maps.LatLng pt[1], pt[0] for pt in feature.geometry.coordinates[0])
 
         infowindow = new google.maps.InfoWindow
           content: infoWindowContent feature
@@ -60,9 +62,11 @@ superagent.get sourceURL, (err, res) ->
             content: '<div class="overlay">' + feature.properties['overlay'] + '</div>'
 
       when 'Point'
+        point = feature.geometry
+        pointsToFit.push new google.maps.LatLng point.coordinates[1], point.coordinates[0]
         map.addMarker
-          lat: feature.geometry.coordinates[1]
-          lng: feature.geometry.coordinates[0]
+          lat: point.coordinates[1]
+          lng: point.coordinates[0]
           title: feature.properties['title']
           icon:
             path: google.maps.SymbolPath.CIRCLE
