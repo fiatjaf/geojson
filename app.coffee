@@ -2,11 +2,14 @@ superagent    = require 'superagent'
 polygonCenter = require 'geojson-polygon-center'
 qs            = require 'qs'
 
-div = document.createElement 'div'
-params = qs.parse location.search.slice 1
-sourceURL = params.url or params.source or params.src
-if sourceURL.slice(-1)[0] == '/'
-  sourceURL = sourceURL.slice 0, -1
+if not location.search
+  sourceURL = null
+  params = {}
+else
+  params = qs.parse location.search.slice 1
+  sourceURL = params.url or params.source or params.src
+  if sourceURL and sourceURL.slice(-1)[0] == '/'
+    sourceURL = sourceURL.slice 0, -1
 
 map = new GMaps
   div: '#map'
@@ -26,7 +29,7 @@ if params.type or params.maptype
   # ~
   map.setMapTypeId (params.type or params.maptype).toLowerCase()
 
-superagent.get sourceURL, (err, res) ->
+superagent.get (sourceURL or ''), (err, res) ->
   if err or not res
     return
 

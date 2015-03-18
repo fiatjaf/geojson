@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/fiatjaf/comp/geojson/app.coffee":[function(require,module,exports){
-var div, infoWindowContent, map, params, polygonCenter, qs, sourceURL, superagent;
+var infoWindowContent, map, params, polygonCenter, qs, sourceURL, superagent;
 
 superagent = require('superagent');
 
@@ -7,14 +7,15 @@ polygonCenter = require('geojson-polygon-center');
 
 qs = require('qs');
 
-div = document.createElement('div');
-
-params = qs.parse(location.search.slice(1));
-
-sourceURL = params.url || params.source || params.src;
-
-if (sourceURL.slice(-1)[0] === '/') {
-  sourceURL = sourceURL.slice(0, -1);
+if (!location.search) {
+  sourceURL = null;
+  params = {};
+} else {
+  params = qs.parse(location.search.slice(1));
+  sourceURL = params.url || params.source || params.src;
+  if (sourceURL && sourceURL.slice(-1)[0] === '/') {
+    sourceURL = sourceURL.slice(0, -1);
+  }
 }
 
 map = new GMaps({
@@ -37,7 +38,7 @@ if (params.type || params.maptype) {
   map.setMapTypeId((params.type || params.maptype).toLowerCase());
 }
 
-superagent.get(sourceURL, function(err, res) {
+superagent.get(sourceURL || '', function(err, res) {
   var center, feature, geo, googlepoint, i, infowindow, j, len, len1, path, point, pointsToFit, pt, ref, ref1;
   if (err || !res) {
     return;
