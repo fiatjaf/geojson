@@ -2,9 +2,8 @@ A Google Maps GeoJSON renderer running on your browser (but with URLs you can sh
 
 ### Examples!
 
-* [Linestrings and markers with properties](http://fiatjaf.alhur.es/geojson/?type=hybrid&url=https://gist.githubusercontent.com/fiatjaf/5a5b49d4e3b9306cb1e8/raw/a2428d67a2d680ee0810c732f4cb2ef7a45e1e7d/map.geojson/), from [this gist](https://gist.github.com/fiatjaf/5a5b49d4e3b9306cb1e8/)
-* [Polygons with overlays](http://fiatjaf.alhur.es/geojson/?url=https://gist.githubusercontent.com/fiatjaf/f3fb3621dbeb38717431/raw/dacbded21836ad376a944964ba6295fa4d345f4f/map.geojson/), from [this gist](https://gist.github.com/fiatjaf/f3fb3621dbeb38717431/)
-* [Polygon with a point on a terrain map](http://fiatjaf.alhur.es/geojson/?type=terrain&src=http://rawgit.com/fiatjaf/maps/master/batata.geojson/), from [this file](https://github.com/fiatjaf/maps/blob/master/batata.geojson)
+* [Linestrings and markers with properties](http://fiatjaf.alhur.es/geojson-render/?type=hybrid&url=https://gist.githubusercontent.com/fiatjaf/5a5b49d4e3b9306cb1e8/raw/a2428d67a2d680ee0810c732f4cb2ef7a45e1e7d/map.geojson/), from [this gist](https://gist.github.com/fiatjaf/5a5b49d4e3b9306cb1e8/)
+* [Polygons with overlays](http://fiatjaf.alhur.es/geojson-render/?url=https://gist.githubusercontent.com/fiatjaf/f3fb3621dbeb38717431/raw/dacbded21836ad376a944964ba6295fa4d345f4f/map.geojson/), from [this gist](https://gist.github.com/fiatjaf/f3fb3621dbeb38717431/)
 
 ### Documentation!
 
